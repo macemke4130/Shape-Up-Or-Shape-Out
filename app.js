@@ -16,9 +16,13 @@ class Shape {
             "height" : width,
             "width" : width
         });
+        let xPos = randomVal(0, max);
+        if(xPos > max - width){xPos = max - width;} // This can be cleaner --
+        let yPos = randomVal(0, max);
+        if(yPos > max - width){yPos = max - width;} // This can be cleaner --
         this.div.css({
-            "left" : randomVal(0, max),
-            "top" : randomVal(0, max)
+            "left" : xPos,
+            "top" : yPos
         });
     }
 }
@@ -31,7 +35,7 @@ function ranColor() {
     return output;
 }
 
-let max = 600; // Size of #canvas --
+let max = 600; // Size of #canvas. Should be dynamic --
 function randomVal(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
@@ -41,3 +45,10 @@ $('#add-square').click(function(){
     s1 = new Shape;
     s1.square(width);
 })
+
+// for (let index = 0; index < 500; index++) {
+//     let width = 50;
+//     s1 = new Shape;
+//     s1.square(width);
+    
+// }
