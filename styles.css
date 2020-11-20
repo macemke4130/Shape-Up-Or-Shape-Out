@@ -1,0 +1,18 @@
+#canvas {
+    width: 600px;
+    height: 600px;
+    background-color: purple;
+    border: 1px solid black;
+    
+}
+
+#outputs {
+    padding: 5px;
+    background-color: pink;
+    border: 1px solid black;
+    
+}
+
+.output {
+
+}
