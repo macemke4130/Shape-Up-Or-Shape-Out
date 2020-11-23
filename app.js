@@ -1,4 +1,4 @@
-let max = 600; // Size of #canvas. Should be dynamic --
+let max = $('#canvas').css("width").slice(0, 3); // Gets the size of the #canvas element --
 let shapeList = [];
 let shapeCount = 0;
 
@@ -6,19 +6,20 @@ class Shape {
     constructor(width) {
         this.div = $('<div></div>');
         this.div.addClass('shape');
-
-        this.div.click(() => this.outputs(this.type, this.width, this.height));
+        this.div.click(() => this.describe(this.type, this.width, this.height));
         this.div.dblclick(() => this.removeShape());
+        this.div.mouseover(() => this.hoverShape());
+        this.div.mouseout(() => this.hoverOffShape());
     }
 
     randomVal(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
 
-    outputs(type, width, height) {
+    describe(type, width, height) {
         this.clearOutputs();
+        // Determines output for Square or Rectangle --
         if (type == "square" && width != height) { type = "rectangle"; }
-        
         type = type.charAt(0).toUpperCase() + type.slice(1); // Capitalizes first character --
 
         $('#shape-output').val(type);
@@ -33,7 +34,7 @@ class Shape {
                 break;
 
             case "Triangle":
-                $('#area-output').val((width * height) / 2);
+                $('#area-output').val((width * height) / 2 + "px");
                 $('#radius-output').val("N/A");
                 $('#perimeter-output').val((Math.floor(Math.sqrt((width * width) + (width * width)) + (width * 2))) + "px");
                 break;
@@ -47,6 +48,7 @@ class Shape {
     }
 
     clearOutputs() {
+        this.hoverOffShape();
         $('#shape-output').val("");
         $('#width-output').val("");
         $('#height-output').val("");
@@ -55,9 +57,19 @@ class Shape {
         $('#perimeter-output').val("");
     }
 
-    removeShape(){
-       $(this.div).remove();
-       this.clearOutputs();
+    removeShape() {
+        $(this.div).remove();
+        this.clearOutputs();
+        shapeCount--;
+    }
+
+    hoverShape(){
+        document.getElementById('hover').innerHTML = `X Position: ${this.xPos}<br>
+        Y Position: ${this.yPos}`;
+    }
+
+    hoverOffShape(){
+        document.getElementById('hover').innerHTML = "";
     }
 }
 
@@ -67,7 +79,7 @@ class Circle extends Shape {
         this.type = "circle";
         this.width = radius * 2;
         this.height = radius * 2;
-        this.xPos = this.randomVal(0, (max - this.width));
+        this.xPos = this.randomVal(0, (max - this.width)); // Calculates the size of the object into the random position --
         this.yPos = this.randomVal(0, (max - this.height));
 
         this.div.addClass('circle');
@@ -88,7 +100,7 @@ class Triangle extends Shape {
         this.type = "triangle";
         this.width = width;
         this.height = width;
-        this.xPos = this.randomVal(0, (max - this.width));
+        this.xPos = this.randomVal(0, (max - this.width)); // Calculates the size of the object into the random position --
         this.yPos = this.randomVal(0, (max - this.height));
 
         this.div.addClass('triangle');
@@ -104,15 +116,15 @@ class Triangle extends Shape {
 }
 
 class Square extends Shape {
-    constructor(width, height = width) {
+    constructor(width, height = width) { // Defaults to a square for only one input --
         super();
-        this.type = "square";
+        this.type = "square"; // Rectangles get their name changed in the describe() method --
         this.width = width;
         this.height = height;
-        this.xPos = this.randomVal(0, (max - this.width));
+        this.xPos = this.randomVal(0, (max - this.width)); // Calculates the size of the object into the random position --
         this.yPos = this.randomVal(0, (max - this.height));
         let bgColor;
-        if(this.width == this.height){
+        if (this.width == this.height) { // Catch for either Square or Rectangle --
             bgColor = "red";
         } else {
             bgColor = "green";
@@ -131,25 +143,41 @@ class Square extends Shape {
 
 $('#add-square').click(function () {
     let width = $('#add-square-input').val();
-    shapeList[shapeCount] = new Square(width);
-    shapeCount++;
+    if (width > 600) {
+        alert("Maximum size for this input is 600.");
+    } else {
+        shapeList[shapeCount] = new Square(width);
+        shapeCount++;
+    }
 });
 
 $('#add-rectangle').click(function () {
     let width = $('#add-rectangle-width-input').val();
     let height = $('#add-rectangle-height-input').val();
-    shapeList[shapeCount] = new Square(width, height);
-    shapeCount++;
+    if (width > 600 || height > 600) {
+        alert("Maximum size for this input is 600.");
+    } else {
+        shapeList[shapeCount] = new Square(width, height);
+        shapeCount++;
+    }
 });
 
 $('#add-circle').click(function () {
     let radius = $('#add-circle-input').val();
-    shapeList[shapeCount] = new Circle(radius);
-    shapeCount++;
+    if (radius > 300) {
+        alert("Maximum size for this input is 300.");
+    } else {
+        shapeList[shapeCount] = new Circle(radius);
+        shapeCount++;
+    }
 });
 
 $('#add-triangle').click(function () {
     let width = $('#add-triangle-input').val();
-    shapeList[shapeCount] = new Triangle(width);
-    shapeCount++;
+    if (width > 600) {
+        alert("Maximum size for this input is 600.");
+    } else {
+        shapeList[shapeCount] = new Triangle(width);
+        shapeCount++;
+    }
 });
