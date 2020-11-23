@@ -2,7 +2,7 @@
     position: relative;
     width: 600px;
     height: 600px;
-    background-color: purple;
+    background-color: hsl(110, 45%, 80%);
     border: 1px solid black;
     
 }
@@ -10,8 +10,16 @@
 #outputs {
     padding: 5px;
     background-color: pink;
+    border: 1px solid black;    
+}
+
+.shape {
     border: 1px solid black;
-    
+    position: absolute;
+}
+
+.circle {
+    border-radius: 100%;
 }
 
 .output {

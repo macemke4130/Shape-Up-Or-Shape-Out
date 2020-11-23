@@ -1,29 +1,39 @@
 class Shape {
-    constructor(){
+    constructor() {
         this.div = $('<div></div>');
+        this.div.addClass('shape');
+        this.xPos = randomVal(0, max);
+        this.yPos = randomVal(0, max);
         this.div.css({
-            "position" : "absolute"
+            "background-color": ranColor(),
+            "left": this.xPos,
+            "top": this.yPos
         });
-        this.div.css({
-            "background-color": ranColor()
-        });
-        
     }
-
-    square(width){
+    // If height is blank, height defaults to the width and creates a square. Utilizing one method for both square and rectangle --
+    square(width, height = width) {
+        this.div.css({
+            "height": height,
+            "width": width
+        });
         $('#canvas').append(this.div);
-        this.div.css({
-            "height" : width,
-            "width" : width
+        this.div.click(function () {
+            outputs("Square", width, height);
         });
-        let xPos = randomVal(0, max);
-        if(xPos > max - width){xPos = max - width;} // This can be cleaner --
-        let yPos = randomVal(0, max);
-        if(yPos > max - width){yPos = max - width;} // This can be cleaner --
+    }
+}
+
+class Circle extends Shape {
+    constructor(radius) {
+        super();
+        console.log(this.div);
+        //radius = 100;
+        this.div.addClass('circle');
         this.div.css({
-            "left" : xPos,
-            "top" : yPos
+            "height": radius * 2,
+            "width": radius * 2
         });
+        $('#canvas').append(this.div);
     }
 }
 
@@ -35,20 +45,29 @@ function ranColor() {
     return output;
 }
 
+function outputs(type, width, hight) {
+    console.log(type, width, height);
+}
+
 let max = 600; // Size of #canvas. Should be dynamic --
 function randomVal(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-$('#add-square').click(function(){
+$('#add-square').click(function () {
     let width = $('#add-square-input').val();
     s1 = new Shape;
     s1.square(width);
-})
+});
 
-// for (let index = 0; index < 500; index++) {
-//     let width = 50;
-//     s1 = new Shape;
-//     s1.square(width);
-    
-// }
+$('#add-rectangle').click(function () {
+    let width = $('#add-rectangle-width-input').val();
+    let height = $('#add-rectangle-height-input').val();
+    s1 = new Shape;
+    s1.square(width, height);
+});
+
+$('#add-circle').click(function () {
+    let radius = $('#add-circle-input').val();
+    s1 = new Circle(radius);
+});
