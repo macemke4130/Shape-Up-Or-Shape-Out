@@ -13,7 +13,7 @@
     border: 1px solid black;    
 }
 
-.circle, .square, .triangle {
+.shape {
     position: absolute;
 }
 
