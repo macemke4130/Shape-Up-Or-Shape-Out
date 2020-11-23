@@ -5,29 +5,28 @@ class Shape {
         this.xPos = randomVal(0, max);
         this.yPos = randomVal(0, max);
         this.div.css({
-            "background-color": ranColor(),
+            "background-color": this.ranColor(),
             "left": this.xPos,
             "top": this.yPos
         });
     }
-    // If height is blank, height defaults to the width and creates a square. Utilizing one method for both square and rectangle --
-    square(width, height = width) {
-        this.div.css({
-            "height": height,
-            "width": width
-        });
-        $('#canvas').append(this.div);
-        this.div.click(function () {
-            outputs("Square", width, height);
-        });
+
+    ranColor() {
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        let output = `rgb(${r}, ${g}, ${b})`;
+        return output;
     }
+
+    // this.div.click(function () {
+    //     outputs("Square", width, height);
+    // });
 }
 
 class Circle extends Shape {
     constructor(radius) {
         super();
-        console.log(this.div);
-        //radius = 100;
         this.div.addClass('circle');
         this.div.css({
             "height": radius * 2,
@@ -37,12 +36,15 @@ class Circle extends Shape {
     }
 }
 
-function ranColor() {
-    let r = Math.floor(Math.random() * 256);
-    let g = Math.floor(Math.random() * 256);
-    let b = Math.floor(Math.random() * 256);
-    let output = `rgb(${r}, ${g}, ${b})`;
-    return output;
+class Square extends Shape {
+    constructor(width, height = width){
+        super();
+        this.div.css({
+            "height": height,
+            "width": width
+        });
+        $('#canvas').append(this.div);
+    }
 }
 
 function outputs(type, width, hight) {
@@ -56,8 +58,7 @@ function randomVal(min, max) {
 
 $('#add-square').click(function () {
     let width = $('#add-square-input').val();
-    s1 = new Shape;
-    s1.square(width);
+    s1 = new Square(width);
 });
 
 $('#add-rectangle').click(function () {
